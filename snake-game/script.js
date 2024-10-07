@@ -10,6 +10,19 @@ let gameInterval;
 document.getElementById('startButton').addEventListener('click', startGame);
 window.addEventListener('keydown', changeDirection);
 
+document.getElementById('stopButton').addEventListener('click', endGame); // 添加结束游戏按钮的监听器
+
+function endGame() {
+    clearInterval(gameInterval); // 停止游戏循环
+    document.getElementById('score').innerText = `游戏结束，最终分数: ${score}`;
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // 清除画布
+    // 选填：可以显示一个"游戏结束"的提示
+    ctx.font = "40px Arial";
+    ctx.fillStyle = "red";
+    ctx.textAlign = "center";
+    ctx.fillText("游戏结束", canvas.width / 2, canvas.height / 2);
+}
+
 function startGame() {
     resetGame();
     gameInterval = setInterval(gameLoop, 100);
@@ -17,7 +30,7 @@ function startGame() {
 
 function resetGame() {
     snake = [{ x: 10, y: 10 }];
-    direction = { x: 0, y: 0 };
+    direction = { x: 1, y: 0 }; // 设置初始方向向右
     score = 0;
     document.getElementById('score').innerText = `分数: ${score}`;
     spawnFood();
@@ -27,10 +40,21 @@ function resetGame() {
 }
 
 function spawnFood() {
-    food = {
-        x: Math.floor(Math.random() * 20),
-        y: Math.floor(Math.random() * 20)
-    };
+    let newFood;
+    // 重复生成食物，直到它不与蛇的身体重叠
+    do {
+        newFood = {
+            x: Math.floor(Math.random() * 20),
+            y: Math.floor(Math.random() * 20)
+        };
+    } while (isFoodOnSnake(newFood)); // 检查新生成的食物是否与蛇的位置重叠
+
+    food = newFood;
+}
+
+function isFoodOnSnake(newFood) {
+    // 检查食物是否生成在蛇的身体上
+    return snake.some(segment => segment.x === newFood.x && segment.y === newFood.y);
 }
 
 function changeDirection(event) {
@@ -94,19 +118,22 @@ function updateSnake() {
         spawnFood();
         vibrateGamepad(100); // 吃到食物时震动
     } else {
-        if (checkCollision()) {
-            vibrateGamepad(200); // 吃到自己时震动
-        } else {
-            snake.pop();
-        }
+        snake.pop();
+    }
+    
+    if (checkCollision()) {
+        vibrateGamepad(200); // 吃到自己时震动
+        // 结束游戏
+        endGame();
     }
 }
 
 function checkCollision() {
     const head = snake[0];
-    // 检查蛇是否碰到自身
-    for (let i = 1; i < snake.length; i++) {
+    // 检查蛇是否碰到自身，从第二个身体段开始检查
+    for (let i = 4; i < snake.length; i++) {
         if (head.x === snake[i].x && head.y === snake[i].y) {
+            console.log("Collision detected!"); // 添加这行
             return true;
         }
     }
