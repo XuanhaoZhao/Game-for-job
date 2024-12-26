@@ -10,8 +10,7 @@ Game::Game()
       scorePlayer1(0), scorePlayer2(0) {  // 初始化玩家1和玩家2的分数为0
     // 加载字体文件，如果失败则输出错误信息并退出程序
     if (!font.loadFromFile("./assets/OpenSans-Italic-VariableFont_wdth,wght.ttf")) {
-        std::cerr << "Failed to load font!" << std::endl;
-        exit(EXIT_FAILURE);
+        throw std::runtime_error("Failed to load font"); // 修改：加载像素风格字体
     }
     // 设置分数显示文本的字体、字符大小、颜色和位置
     scoreText.setFont(font);
@@ -28,6 +27,11 @@ Game::Game()
     debugPointPlayer2.setFillColor(sf::Color::Red);
     debugPointPlayer2.setOrigin(5.0f, 5.0f);
     // Debug
+
+    // 修改：初始化虚线网格
+    netLine.setSize(sf::Vector2f(10.0f, 20.0f));
+    netLine.setFillColor(sf::Color::Green);
+
 
     // 重置游戏状态
     resetGame();
@@ -95,11 +99,20 @@ void Game::render() {
     player1.render(window);  // 渲染玩家1的拍子
     player2.render(window);  // 渲染玩家2的拍子
     ball.render(window);  // 渲染球
-    
+
+    // 修改：渲染虚线网格
+    for (float y = 0; y < window.getSize().y; y += 40.0f) {
+        netLine.setPosition(window.getSize().x / 2 - netLine.getSize().x / 2, y);
+        window.draw(netLine);
+    }
     // 输出调试信息，显示拍子的边界
+
     std::cout << "Player1 bounds: " << player1.getShape().getGlobalBounds().left << ", " << player1.getShape().getGlobalBounds().top << std::endl;
     std::cout << "Player2 bounds: " << player2.getShape().getGlobalBounds().left << ", " << player2.getShape().getGlobalBounds().top << std::endl;
     window.draw(scoreText);  // 绘制分数文本
+
+    // 修改：叠加复古显示效果
+    // window.draw(retroOverlay);
 
     window.display();  // 显示窗口内容
 }

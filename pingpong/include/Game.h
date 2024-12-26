@@ -36,6 +36,9 @@ private:
 
     static constexpr float paddleWidth = 5.0f;  // 挡板宽度 / Paddle width
     static constexpr float paddleHeight = 30.0f; // 挡板高度 / Paddle height
+
+    sf::RectangleShape netLine; // 修改：中间虚线网格
+    
 };
 
 #endif // GAME_H
