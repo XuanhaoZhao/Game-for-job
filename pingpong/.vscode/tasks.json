@@ -1,0 +1,27 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Pong Game",
+            "type": "shell",
+            "command": "D:/w64devkit/bin/g++.exe",
+            "args": [
+                "-g",
+                "${workspaceFolder}/src/main.cpp",
+                "${workspaceFolder}/src/Ball.cpp",
+                "${workspaceFolder}/src/Paddle.cpp",
+                "${workspaceFolder}/src/Game.cpp",
+                "-I", "D:/cpplib/SFML-2.6.2-windows-gcc-13.1.0-mingw-64-bit/SFML-2.6.2/include",
+                "-L", "D:/cpplib/SFML-2.6.2-windows-gcc-13.1.0-mingw-64-bit/SFML-2.6.2/lib",
+                "-lsfml-graphics",
+                "-lsfml-window",
+                "-lsfml-system",
+                "-o", "${workspaceFolder}/PingPong.exe"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

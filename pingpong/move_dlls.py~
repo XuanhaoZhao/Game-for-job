@@ -1,0 +1,14 @@
+import os
+import shutil
+
+source_dir = "./dll"
+target_dir = "./build"
+
+if not os.path.exists(target_dir):
+        os.makedirs(target_dir)
+
+        for filename in os.listdir(source_dir):
+                if filename.endswith(".dll"):
+                            shutil.copy(os.path.join(source_dir, filename), target_dir)
+                            print(f"Copied {filename} to {target_dir}")
+
