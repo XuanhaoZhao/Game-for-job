@@ -29,16 +29,13 @@ private:
     sf::CircleShape debugPointPlayer1;  // 用于显示 Player1 的位置
     sf::CircleShape debugPointPlayer2;  // 用于显示 Player2 的位置
 
-    sf::Font font; // 字体 / Font
+    static sf::Font font; // 字体 / Font
     sf::Text scoreText; // 分数显示 / Score display
     int scorePlayer1; // 玩家1得分 / Player 1 score
     int scorePlayer2; // 玩家2得分 / Player 2 score
 
-    static constexpr float paddleWidth = 5.0f;  // 挡板宽度 / Paddle width
-    static constexpr float paddleHeight = 30.0f; // 挡板高度 / Paddle height
-
-    sf::RectangleShape netLine; // 修改：中间虚线网格
-    
+    static constexpr float paddleWidth = 20.0f;  // 挡板宽度 / Paddle width
+    static constexpr float paddleHeight = 100.0f; // 挡板高度 / Paddle height
 };
 
 #endif // GAME_H

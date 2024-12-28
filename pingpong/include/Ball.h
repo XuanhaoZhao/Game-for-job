@@ -44,6 +44,8 @@ public:
 private:
     sf::CircleShape shape; // 球的形状 / Shape of the ball
     sf::Vector2f velocity; // 球的速度 / Velocity of the ball
+    float collisionCooldown; // 碰撞冷却时间
+    float cooldownTimer;     // 冷却计时器
 };
 
 #endif // BALL_H

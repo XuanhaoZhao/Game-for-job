@@ -1,16 +1,18 @@
 #include "Game.h"  // 包含游戏类的头文件
 #include <iostream>  // 包含输入输出流库，用于标准输入输出
 
+sf::Font Game::font;
 // 游戏类的构造函数，初始化游戏窗口、球、两个玩家的拍子、分数和字体
 Game::Game()
     : window(sf::VideoMode(800, 600), "Ping Pong"),  // 创建800x600的窗口，标题为"Ping Pong"
       ball(10.0f, sf::Vector2f(400.0f, 300.0f)),  // 创建一个半径为10的球，初始位置在(400, 300)
       player1(sf::Vector2f(paddleWidth, paddleHeight), sf::Vector2f(50.0f, 300.0f)),  // 创建玩家1的拍子，初始位置在(50, 300)
-      player2(sf::Vector2f(5.f, 30.f), sf::Vector2f(750.0f, 300.0f)),  // 创建玩家2的拍子，初始位置在(750, 300)
+      player2(sf::Vector2f(paddleWidth, paddleHeight), sf::Vector2f(750.0f, 300.0f)),  // 创建玩家2的拍子，初始位置在(750, 300)
       scorePlayer1(0), scorePlayer2(0) {  // 初始化玩家1和玩家2的分数为0
     // 加载字体文件，如果失败则输出错误信息并退出程序
     if (!font.loadFromFile("./assets/OpenSans-Italic-VariableFont_wdth,wght.ttf")) {
-        throw std::runtime_error("Failed to load font"); // 修改：加载像素风格字体
+        std::cerr << "Failed to load font!" << std::endl;
+        exit(EXIT_FAILURE);
     }
     // 设置分数显示文本的字体、字符大小、颜色和位置
     scoreText.setFont(font);
@@ -27,11 +29,6 @@ Game::Game()
     debugPointPlayer2.setFillColor(sf::Color::Red);
     debugPointPlayer2.setOrigin(5.0f, 5.0f);
     // Debug
-
-    // 修改：初始化虚线网格
-    netLine.setSize(sf::Vector2f(10.0f, 20.0f));
-    netLine.setFillColor(sf::Color::Green);
-
 
     // 重置游戏状态
     resetGame();
@@ -73,8 +70,8 @@ void Game::update(float deltaTime) {
                                   player2.getShape().getPosition().y + paddleHeight / 2);
 
     // 输出调试信息，显示拍子的位置
-    std::cout << "Player1 position: " << player1.getShape().getPosition().y << std::endl;
-    std::cout << "Player2 position: " << player2.getShape().getPosition().y << std::endl;
+    // std::cout << "Player1 position: " << player1.getShape().getPosition().y << std::endl;
+    // std::cout << "Player2 position: " << player2.getShape().getPosition().y << std::endl;
     // 检查球是否与拍子发生碰撞
     ball.checkCollisionWithPaddle(player1.getShape());
     ball.checkCollisionWithPaddle(player2.getShape());
@@ -99,20 +96,11 @@ void Game::render() {
     player1.render(window);  // 渲染玩家1的拍子
     player2.render(window);  // 渲染玩家2的拍子
     ball.render(window);  // 渲染球
-
-    // 修改：渲染虚线网格
-    for (float y = 0; y < window.getSize().y; y += 40.0f) {
-        netLine.setPosition(window.getSize().x / 2 - netLine.getSize().x / 2, y);
-        window.draw(netLine);
-    }
+    
     // 输出调试信息，显示拍子的边界
-
     std::cout << "Player1 bounds: " << player1.getShape().getGlobalBounds().left << ", " << player1.getShape().getGlobalBounds().top << std::endl;
     std::cout << "Player2 bounds: " << player2.getShape().getGlobalBounds().left << ", " << player2.getShape().getGlobalBounds().top << std::endl;
     window.draw(scoreText);  // 绘制分数文本
-
-    // 修改：叠加复古显示效果
-    // window.draw(retroOverlay);
 
     window.display();  // 显示窗口内容
 }

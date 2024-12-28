@@ -2,6 +2,7 @@
 #define PADDLE_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Window/Joystick.hpp>
 
 /**
  * @class Paddle

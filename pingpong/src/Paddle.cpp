@@ -28,10 +28,10 @@ Paddle::Paddle(const sf::Vector2f& size, const sf::Vector2f& position)
 // }
 void Paddle::update(float deltaTime, const sf::Keyboard::Key upKey, const sf::Keyboard::Key downKey, const sf::Vector2u& windowSize) {
     sf::Vector2f shapePosition = shape.getPosition();
-    if (sf::Keyboard::isKeyPressed(upKey) && shapePosition.y > 0) {
+    if (sf::Keyboard::isKeyPressed(upKey) && shapePosition.y - shape.getSize().y / 2 > 0) { // [改动3] 防止越界逻辑更完善
         shape.move(0, -speed * deltaTime);
     }
-    if (sf::Keyboard::isKeyPressed(downKey) && shapePosition.y + shape.getSize().y < windowSize.y) {
+    if (sf::Keyboard::isKeyPressed(downKey) && shapePosition.y + shape.getSize().y / 2 < windowSize.y) {
         shape.move(0, speed * deltaTime);
     }
 }
